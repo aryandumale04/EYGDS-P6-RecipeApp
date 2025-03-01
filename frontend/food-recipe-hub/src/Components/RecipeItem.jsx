@@ -1,11 +1,14 @@
 import React from 'react'
-import { useLoaderData } from 'react-router-dom'
-import foodImg from '../assets/foodrecipe.png'
+import { Link, useLoaderData } from 'react-router-dom'
+
 import { FaStopwatch } from "react-icons/fa6";
 import { FaHeart } from "react-icons/fa";
+import { MdEdit } from "react-icons/md";
+import { AiFillDelete } from "react-icons/ai";
 
 export default function RecipeItem() {
   const allRecipes = useLoaderData() || []; // Ensure it's an array even if undefined
+  let path=window.location.pathname==="/myRecipe" ? true:false; 
 
   // console.log(allRecipes)
   console.log("Fetched Recipes:", allRecipes.map(recipe => recipe.coverImage));
@@ -23,7 +26,12 @@ export default function RecipeItem() {
                   <div className='timer'>
                     <FaStopwatch /> {item.time} {/* Display the time required */}
                   </div>
-                  <FaHeart />
+                  {(!path) ? <FaHeart /> :
+                  <div className='action'>
+                    <Link to={`/editRecipe/${item._id}`} className="editIcon"><MdEdit /></Link>
+                    <AiFillDelete  className='deleteIcon'/>
+                    </div>}
+                  
                 </div>
               </div>
             </div>
