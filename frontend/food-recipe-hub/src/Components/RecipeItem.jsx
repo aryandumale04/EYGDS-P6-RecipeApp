@@ -37,8 +37,8 @@ export default function RecipeItem() {
             </div>
           ))
         ) : (
-          <p>No recipes found</p> // Show this when data is missing
-        )}
+          <p>No recipes found</p> // Show this when data is missing 12345 
+        )}  
       </div>
     </>
   );
