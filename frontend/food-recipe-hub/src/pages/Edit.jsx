@@ -3,7 +3,14 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
 export default function EditRecipe() {
-    const [recipeData, setRecipeData] = useState({});
+    const [recipeData, setRecipeData] = useState({
+        title: "",
+        time: "",
+        instructions: "",
+        ingredients: "",
+        file: null
+    });
+    
     const navigate = useNavigate();
     const {id}=useParams();
 
@@ -16,12 +23,13 @@ export default function EditRecipe() {
                     title:res.title,
                     time:res.time,
                     instructions:res.instructions,
-                    ingredients:res.ingredients,
+                    ingredients:res.ingredients.join(","),
                     file:res.coverImage
                 })
             })
 
         }
+        getData();
     },[])
 
 
@@ -43,22 +51,24 @@ export default function EditRecipe() {
         formData.append("title", recipeData.title);
         formData.append("time", recipeData.time);
         formData.append("instructions", recipeData.instructions);
-        formData.append("ingredients", JSON.stringify(recipeData.ingredients)); // Convert array to JSON
-        formData.append("file", recipeData.file); // Append image file
-
-        console.log("FormData Debugging:", formData); // Debugging
-
+        formData.append("ingredients", JSON.stringify(recipeData.ingredients.split(","))); // Ensure array format
+        if (recipeData.file) {
+            formData.append("file", recipeData.file); // Append only if a new file is selected
+        }
+    
         try {
-            await axios.post("http://localhost:5000/recipe", formData, {
-                headers: { "Content-Type": "multipart/form-data",
-                            "authorization" : "bearer "+localStorage.getItem("token")
-                 }
+            await axios.put(`http://localhost:5000/Recipe/${id}`, formData, {
+                headers: { 
+                    "Content-Type": "multipart/form-data",
+                    "authorization": "bearer " + localStorage.getItem("token")
+                }
             });
-            navigate("/");
+            navigate("/myRecipe");
         } catch (error) {
-            console.error("Error adding recipe:", error);
+            console.error("Error updating recipe:", error);
         }
     };
+    
 
     return (
         <>
@@ -66,19 +76,23 @@ export default function EditRecipe() {
                 <form className='form' onSubmit={onHandleSubmit}>
                     <div className='form-control'>
                         <label>Title:</label>
-                        <input type='text' className='input' name='title' onChange={onHandleChange} />
+                        <input type='text' className='input' name='title' onChange={onHandleChange}  
+                        value ={recipeData.title}/>
                     </div>
                     <div className='form-control'>
                         <label>Time:</label>
-                        <input type='text' className='input' name='time' onChange={onHandleChange} />
+                        <input type='text' className='input' name='time' onChange={onHandleChange} 
+                        value={recipeData.time}/>
                     </div>
                     <div className='form-control'>
                         <label>Ingredients:</label>
-                        <textarea type='text' className='input-textarea' name='ingredients' rows='5' onChange={onHandleChange}></textarea>
+                        <textarea type='text' className='input-textarea' name='ingredients' rows='5' onChange={onHandleChange}
+                        value={recipeData.ingredients}></textarea>
                     </div>
                     <div className='form-control'>
                         <label>Instructions:</label>
-                        <textarea type='text' className='input-textarea' name='instructions' rows='5' onChange={onHandleChange}></textarea>
+                        <textarea type='text' className='input-textarea' name='instructions' rows='5' onChange={onHandleChange}
+                        value={recipeData.instructions}></textarea>
                     </div>
                     <div className='form-control'>
                         <label>Recipe Image:</label>

@@ -63,19 +63,39 @@ const getRecipe = async (req, res) => {
 };
 
 const editRecipe = async (req, res) => {
-    const { title, ingredients, instructions, time } = req.body;
     try {
+        const { title, ingredients, instructions, time } = req.body;
+
+        // Find the existing recipe
         const recipe = await Recipes.findById(req.params.id);
-        if (recipe) {
-            await Recipes.findByIdAndUpdate(req.params.id, req.body, { new: true });
-            res.json({ title, ingredients, instructions, time });
-        } else {
-            res.status(404).json({ message: "Recipe not found!" });
+        if (!recipe) {
+            return res.status(404).json({ message: "Recipe not found!" });
         }
+
+        let imagePath = recipe.coverImage; // Keep the old image path if no new image is uploaded
+
+        // If a new image is uploaded, update the imagePath
+        if (req.file) {
+            imagePath = `${req.protocol}://${req.get("host")}/images/${req.file.filename}`;
+        }
+
+        // Convert ingredients back to an array
+        const ingredientsArray = JSON.parse(ingredients);
+
+        // Update the recipe
+        const updatedRecipe = await Recipes.findByIdAndUpdate(
+            req.params.id,
+            { title, ingredients: ingredientsArray, instructions, time, coverImage: imagePath },
+            { new: true }
+        );
+
+        res.json(updatedRecipe);
     } catch (err) {
-        return res.status(500).json({ message: "Error updating recipe!" });
+        console.error("Error updating recipe:", err);
+        res.status(500).json({ message: "Error updating recipe!", error: err.message });
     }
 };
+
 
 const deleteRecipe = async (req, res) => {
     try {
