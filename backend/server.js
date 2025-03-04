@@ -21,6 +21,10 @@ app.use(cors());
 app.use(express.static("public")); // Keeping your existing static file serving
 
 // Routes
+app.get("/", (req, res) => {
+    res.send("Backend is running!");
+});
+
 app.use("/", require("./routes/user"));
 app.use("/recipe", require("./routes/recipe"));
 
