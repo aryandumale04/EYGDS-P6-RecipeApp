@@ -19,7 +19,7 @@ if (!fs.existsSync(uploadPath)) {
 app.use(express.json());
 
 // ✅ Properly configure CORS
-const allowedOrigins = ["https://food-recipe-hub.vercel.app"]; // Frontend URL
+const allowedOrigins = ["https://food-recipe-hub.vercel.app/"]; // Frontend URL
 app.use(cors({
     origin: function (origin, callback) {
         if (!origin || allowedOrigins.includes(origin)) {
