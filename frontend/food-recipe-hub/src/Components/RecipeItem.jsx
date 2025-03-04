@@ -18,16 +18,20 @@ export default function RecipeItem() {
 
   const onDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/recipe/${id}`);
-      
+      // Use the deployed backend URL for the API call
+      await axios.delete(`https://food-recipe-hub.onrender.com/recipe/${id}`);
+  
       // Update state instantly without refreshing the page
       setAllRecipe((prevRecipes) => prevRecipes.filter((recipe) => recipe._id !== id));
-      let filterItems=favItem.filter(allRecipes=>allRecipes._id!==id)
-      localStorage.setItem("fav",JSON.stringify(filterItems))
+  
+      // Update the favItem in localStorage
+      let filterItems = favItem.filter(allRecipes => allRecipes._id !== id);
+      localStorage.setItem("fav", JSON.stringify(filterItems));
     } catch (error) {
       console.error("Error deleting recipe:", error);
     }
   };
+  
 
   const favRecipe=(item)=>{
     let filterItems=favItem.filter(allRecipes=>allRecipes._id!==item._id)

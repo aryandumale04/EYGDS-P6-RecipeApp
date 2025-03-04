@@ -30,10 +30,11 @@ export default function AddFoodRecipe() {
         console.log("FormData Debugging:", formData); // Debugging
 
         try {
-            await axios.post("http://localhost:5000/recipe", formData, {
-                headers: { "Content-Type": "multipart/form-data",
-                            "authorization" : "bearer "+localStorage.getItem("token")
-                 }
+            await axios.post("https://food-recipe-hub.onrender.com/recipe", formData, {
+                headers: { 
+                    "Content-Type": "multipart/form-data",
+                    "authorization" : "bearer " + localStorage.getItem("token") 
+                }
             });
             navigate("/");
         } catch (error) {

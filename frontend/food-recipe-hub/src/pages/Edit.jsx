@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
@@ -12,26 +12,26 @@ export default function EditRecipe() {
     });
     
     const navigate = useNavigate();
-    const {id}=useParams();
+    const {id} = useParams();
 
     useEffect(() => {
-        const getData=async()=>{
-            await axios.get(`http://localhost:5000/Recipe/${id}`)
-            .then(response=>{
-                let res=response.data
+        const getData = async () => {
+            try {
+                const response = await axios.get(`https://food-recipe-hub.onrender.com/Recipe/${id}`);
+                let res = response.data;
                 setRecipeData({
-                    title:res.title,
-                    time:res.time,
-                    instructions:res.instructions,
-                    ingredients:res.ingredients.join(","),
-                    file:res.coverImage
-                })
-            })
-
-        }
+                    title: res.title,
+                    time: res.time,
+                    instructions: res.instructions,
+                    ingredients: res.ingredients.join(","),
+                    file: res.coverImage
+                });
+            } catch (error) {
+                console.error("Error fetching recipe:", error);
+            }
+        };
         getData();
-    },[])
-
+    }, [id]);
 
     const onHandleChange = (e) => {
         let value =
@@ -57,7 +57,7 @@ export default function EditRecipe() {
         }
     
         try {
-            await axios.put(`http://localhost:5000/Recipe/${id}`, formData, {
+            await axios.put(`https://food-recipe-hub.onrender.com/Recipe/${id}`, formData, {
                 headers: { 
                     "Content-Type": "multipart/form-data",
                     "authorization": "bearer " + localStorage.getItem("token")
@@ -77,7 +77,7 @@ export default function EditRecipe() {
                     <div className='form-control'>
                         <label>Title:</label>
                         <input type='text' className='input' name='title' onChange={onHandleChange}  
-                        value ={recipeData.title}/>
+                        value={recipeData.title}/>
                     </div>
                     <div className='form-control'>
                         <label>Time:</label>

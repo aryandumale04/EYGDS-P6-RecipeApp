@@ -7,26 +7,26 @@ import axios from 'axios';
 import AddFoodRecipe from './pages/AddFoodRecipe';
 import Edit from './pages/Edit';
 
-
 const getAllRecipes = async () => {
   try {
-    const response = await axios.get("http://localhost:5000/recipe");
+    const response = await axios.get("https://food-recipe-hub.onrender.com/recipe");  // Updated URL
     return response.data; // ✅ Return data directly
   } catch (error) {
     console.error("Error fetching recipes:", error);
     throw new Response("Failed to load recipes", { status: 500 }); // ✅ Throw error properly
   }
 };
+
 const getMyRecipes = async () => {
-  let user=JSON.parse(localStorage.getItem("user"));
-  let allRecipes=await getAllRecipes();
-  return allRecipes.filter(item=>item.createdBy===user._id);
+  let user = JSON.parse(localStorage.getItem("user"));
+  let allRecipes = await getAllRecipes();
+  return allRecipes.filter(item => item.createdBy === user._id);
 }
 
-const getFavRecipes=()=>{
-  return JSON.parse(localStorage.getItem("fav"))
-
+const getFavRecipes = () => {
+  return JSON.parse(localStorage.getItem("fav"));
 }
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -34,21 +34,27 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,  // ✅ Use `index: true` instead of `path: "/"` inside children
-        element: <Home />,loader:getAllRecipes
+        element: <Home />,
+        loader: getAllRecipes
       },
       {
-        path: "/myRecipe",element:<Home/>,loader:getMyRecipes
+        path: "/myRecipe",
+        element: <Home />,
+        loader: getMyRecipes
       },
       {
-        path:"/favRecipe",element:<Home/>,loader:getFavRecipes
+        path: "/favRecipe",
+        element: <Home />,
+        loader: getFavRecipes
       },
       {
-        path:"/addRecipe",element:<AddFoodRecipe/>
+        path: "/addRecipe",
+        element: <AddFoodRecipe />
       },
       {
-        path:"/editRecipe/:id",element:<Edit/>
+        path: "/editRecipe/:id",
+        element: <Edit />
       }
-
     ]
   }
 ]);
