@@ -7,16 +7,16 @@ export default function AddFoodRecipe() {
     const navigate = useNavigate();
 
     const onHandleChange = (e) => {
-        let value =
-            e.target.name === "ingredients"
-                ? e.target.value.split(",") // Convert ingredients to array
-                : e.target.name === "file"
-                ? e.target.files[0] // Store file object
-                : e.target.value;
-
-        setRecipeData((prev) => ({ ...prev, [e.target.name]: value }));
+        let { name, value, files } = e.target;
+        if (name === "ingredients") {
+            value = value.split(","); // Convert ingredients to an array
+        } else if (name === "file") {
+            value = files[0]; // Ensure it's reading the file
+            console.log("Selected file:", value); // Debugging
+        }
+        setRecipeData((prev) => ({ ...prev, [name]: value }));
     };
-
+    
     const onHandleSubmit = async (e) => {
         e.preventDefault();
         
@@ -24,11 +24,14 @@ export default function AddFoodRecipe() {
         formData.append("title", recipeData.title);
         formData.append("time", recipeData.time);
         formData.append("instructions", recipeData.instructions);
-        formData.append("ingredients", JSON.stringify(recipeData.ingredients)); // Convert array to JSON
-        formData.append("file", recipeData.file); // Append image file
-
-        console.log("FormData Debugging:", formData); // Debugging
-
+        formData.append("ingredients", JSON.stringify(recipeData.ingredients));
+        formData.append("file", recipeData.file);
+    
+        // ✅ Debugging FormData
+        for (let pair of formData.entries()) {
+            console.log(pair[0], pair[1]);
+        }
+    
         try {
             await axios.post("https://food-recipe-hub.onrender.com/recipe", formData, {
                 headers: { 
@@ -41,6 +44,7 @@ export default function AddFoodRecipe() {
             console.error("Error adding recipe:", error);
         }
     };
+    
 
     return (
         <>

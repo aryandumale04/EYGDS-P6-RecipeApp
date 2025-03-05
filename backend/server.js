@@ -11,7 +11,11 @@ const PORT = process.env.PORT || 5000;
 connectDb();
 
 // ✅ CORS Configuration
-const allowedOrigins = ["https://food-recipe-hub.vercel.app"];
+const allowedOrigins = [
+    "https://food-recipe-hub.vercel.app",
+    "http://localhost:5173"  // ✅ Add this for local testing
+];
+
 app.use(cors({
     origin: function (origin, callback) {
         if (!origin || allowedOrigins.includes(origin)) {
@@ -22,6 +26,7 @@ app.use(cors({
     },
     credentials: true
 }));
+
 
 // Ensure `public/images` directory exists
 const uploadPath = path.join(__dirname, "public", "images");
