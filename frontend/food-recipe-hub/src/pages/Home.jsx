@@ -12,11 +12,21 @@ export default function Home() {
     const [isOpen, setOpen] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+    // ✅ Listen for changes in localStorage
     useEffect(() => {
-        let token = localStorage.getItem("token");
-        if (token) {
-            setIsAuthenticated(true);
-        }
+        const checkAuth = () => {
+            let token = localStorage.getItem("token");
+            setIsAuthenticated(!!token); // Convert token existence to boolean
+        };
+
+        checkAuth(); // Initial check
+
+        // ✅ Listen for storage events (cross-tab authentication)
+        window.addEventListener("storage", checkAuth);
+
+        return () => {
+            window.removeEventListener("storage", checkAuth);
+        };
     }, []);
 
     const addRecipe = () => {
