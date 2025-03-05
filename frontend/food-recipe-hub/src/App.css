@@ -224,6 +224,18 @@ section {
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
 }
 
+/* ✅ Fix for Red Error Message */
+.error {
+  color: red;
+}
+
+/* ✅ Fix for Blue "Don't have an Account?" */
+.dont-have-account {
+  color: blue;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 .container {
   display: flex;
   justify-content: center;

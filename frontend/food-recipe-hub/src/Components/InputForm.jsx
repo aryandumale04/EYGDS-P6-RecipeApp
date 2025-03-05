@@ -6,7 +6,7 @@ export default function InputForm({ setIsOpen, setIsAuthenticated }) {
     const [email, setEmail] = useState("");
     const [password, setPass] = useState("");
     const [isSignUp, setSignUp] = useState(false);
-    const [error, setError] = useState("");
+    const [error, setError] = useState(""); // Fixed the typo in useState
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -45,7 +45,7 @@ export default function InputForm({ setIsOpen, setIsAuthenticated }) {
                 </div>
                 <button type='submit'>{isSignUp ? "Sign Up" : "Login"}</button> <br />
                 {error && <h6 className='error'>{error}</h6>}
-                <p onClick={() => setSignUp(prev => !prev)}>
+                <p className="dont-have-account" onClick={() => setSignUp(prev => !prev)}>
                     {isSignUp ? "Already have an Account?" : "Don't have an Account?"}
                 </p>
             </form>

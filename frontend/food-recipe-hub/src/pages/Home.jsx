@@ -16,18 +16,18 @@ export default function Home() {
     useEffect(() => {
         const checkAuth = () => {
             let token = localStorage.getItem("token");
-            setIsAuthenticated(!!token); // Convert token existence to boolean
+            setIsAuthenticated(!!token);
         };
-
-        checkAuth(); // Initial check
-
-        // ✅ Listen for storage events (cross-tab authentication)
-        window.addEventListener("storage", checkAuth);
-
+    
+        checkAuth(); // ✅ Check on page load
+    
+        window.addEventListener("storage", checkAuth); // ✅ Listen for token updates
+    
         return () => {
             window.removeEventListener("storage", checkAuth);
         };
     }, []);
+    
 
     const addRecipe = () => {
         if (isAuthenticated) {
