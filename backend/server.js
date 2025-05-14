@@ -24,7 +24,8 @@ app.use((req, res, next) => {
   console.log("🛰️ Incoming origin:", origin);
 
   if (allowedOrigins.includes(origin)) {
-    res.setHeader("Access-Control-Allow-Origin", origin); // dynamically set!
+    res.setHeader("Access-Control-Allow-Origin", "http://food-recipe-hub-frontend.s3-website.ap-south-1.amazonaws.com");
+ // dynamically set!
   }
 
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
