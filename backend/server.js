@@ -14,8 +14,7 @@ connectDb();
 app.use((req, res, next) => {
     const allowedOrigins = [
         "http://food-recipe-hub-frontend.s3-website.ap-south-1.amazonaws.com",
-        "https://food-recipe-hub.vercel.app",
-        "http://localhost:5173",
+        
         
     ];
 
