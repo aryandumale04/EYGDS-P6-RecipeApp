@@ -18,12 +18,12 @@ const allowedOrigins = [
 ];
 
 app.use((req, res, next) => {
-  const origin = req.headers.origin;
+   
 
   console.log("🛰️ Incoming origin:", req.headers.origin);
 
-  if (allowedOrigins.includes(origin)) {
-    res.setHeader("Access-Control-Allow-Origin", origin);
+  if (allowedOrigins.includes(req.headers.origin)) {
+    res.setHeader("Access-Control-Allow-Origin", req.headers.origin);
   }
 
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
