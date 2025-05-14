@@ -15,14 +15,17 @@ app.use((req, res, next) => {
     const allowedOrigins = [
         "https://food-recipe-hub.vercel.app",
         "http://localhost:5173",
-        "http://food-recipe-hub-frontend.s3-website.ap-south-1.amazonaws.com"  // ✅ Allow S3 frontend
+        "http://food-recipe-hub-frontend.s3-website.ap-south-1.amazonaws.com" // ✅ Allow S3 frontend
     ];
 
     const origin = req.headers.origin;
-    console.log("🛰️ Incoming origin:", origin);  // <--- ADDED LOG
+    console.log("🛰️ Incoming origin:", origin);  // <-- Debugging log to see if S3 URL is captured
 
     if (allowedOrigins.includes(origin)) {
         res.setHeader("Access-Control-Allow-Origin", origin);
+    } else {
+        // This will help you debug if the S3 URL is being captured
+        console.log("Origin not allowed:", origin);
     }
 
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
@@ -35,6 +38,7 @@ app.use((req, res, next) => {
 
     next();
 });
+
 
 // ✅ Ensure `public/images` directory exists
 const uploadPath = path.join(__dirname, "public", "images");
