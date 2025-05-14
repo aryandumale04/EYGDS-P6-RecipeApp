@@ -15,12 +15,12 @@ app.use((req, res, next) => {
     const allowedOrigins = [
         "https://food-recipe-hub.vercel.app",
         "http://localhost:5173",
-        "http://food-recipe-hub-frontend.s3-website.ap-south-1.amazonaws.com/"  // ✅ Allow local frontend
-
-        
+        "http://food-recipe-hub-frontend.s3-website.ap-south-1.amazonaws.com"  // ✅ Allow S3 frontend
     ];
-    
+
     const origin = req.headers.origin;
+    console.log("🛰️ Incoming origin:", origin);  // <--- ADDED LOG
+
     if (allowedOrigins.includes(origin)) {
         res.setHeader("Access-Control-Allow-Origin", origin);
     }
