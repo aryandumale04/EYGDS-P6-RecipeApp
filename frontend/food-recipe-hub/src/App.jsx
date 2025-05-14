@@ -9,13 +9,16 @@ import Edit from './pages/Edit';
 
 const getAllRecipes = async () => {
   try {
-    const response = await axios.get("https://food-recipe-hub.onrender.com/recipe");  // Updated URL
-    return response.data; // ✅ Return data directly
+    const response = await axios.get("https://food-recipe-hub.onrender.com/recipe", {
+      withCredentials: true,  // Allow credentials (cookies, auth tokens) to be sent
+    });
+    return response.data;
   } catch (error) {
     console.error("Error fetching recipes:", error);
-    throw new Response("Failed to load recipes", { status: 500 }); // ✅ Throw error properly
+    throw new Response("Failed to load recipes", { status: 500 });
   }
 };
+
 
 const getMyRecipes = async () => {
   let user = JSON.parse(localStorage.getItem("user"));
