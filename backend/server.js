@@ -12,33 +12,18 @@ connectDb();
 
 // ✅ Dynamic CORS Fix
 app.use((req, res, next) => {
-    const allowedOrigins = [
-        "http://food-recipe-hub-frontend.s3-website.ap-south-1.amazonaws.com",
-        "https://food-recipe-hub.vercel.app",
-        "http://localhost:5173",
-         "http://food-recipe-hub-frontend.s3-website.ap-south-1.amazonaws.com/"
-        
-    ];
+  res.setHeader("Access-Control-Allow-Origin", "*"); // 👈 Allow ALL origins
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
 
-    const origin = req.headers.origin;
-    console.log("🛰️ Incoming origin:", origin);  // Debug
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
 
-    if (allowedOrigins.includes(origin)) {
-        res.setHeader("Access-Control-Allow-Origin", origin);
-    } else {
-        console.log("❌ Origin not allowed:", origin);
-    }
-
-    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-
-    if (req.method === "OPTIONS") {
-        return res.sendStatus(200);
-    }
-
-    next();
+  next();
 });
+
 
 
 
